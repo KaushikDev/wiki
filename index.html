@@ -1,0 +1,102 @@
+<!-- Notes
+1. Build a simple search feature that will output a list of matching wiki entries.(Bonus: autocomplete)
+2. Clicking on an matching item, takes you to the corresponding wiki page.
+3. Add some cool animations.
+4. Bonus user story : Allow user to choose a language to see the stuff in that selected language.
+5. Add some useful cool features.
+6. P.S. No bullshit ;)
+-->
+
+<!-- Bugs
+1. Improper format. FIXED
+2. Data is not erased on subsequent search. FIXED
+3. Page not opened in separate tab. FIXED
+4. If no search results are found, page shows undefined??. FIXED
+5. Top area  moves. Not an issue.
+6.  No clear button. FIXED
+7. Enter key search. FIXED
+-->
+
+
+<html>
+<head>
+<title>Wiki Viewer</title>
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body style="background-color:skyblue;background-image:url('http://previews.123rf.com/images/defun/defun1005/defun100500003/6922017-Cobblestone-background-road-close-up-Stock-Photo-pebble-stone-background.jpg');">
+<style>
+h1,input,button{
+margin-top:10px;
+margin-bottom:20px;
+
+}
+</style>
+<div class="container text-center">
+<h1 style="font-weight:bold;font-family:lobster;color:black;font-size:50px;text-shadow:1px 1px white;">Wiki Viewer</h1>
+<input type="text" class="form-control" id="searchBox" style="color:black;" placeholder='Enter your search term here...'>
+<button class="btn btn-success btn-lg" id="searchBtn" style=""><i class="fa fa-search" aria-hidden="true"></i></button>
+<button class="btn btn-danger btn-lg" id="clearBtn" style=""><i class="fa fa-times" aria-hidden="true"></i></button>
+
+<div id="searchResults"></div>
+<div class="row text-center" style="margin-top:10px;">
+<div class="col-xs-12">
+<p style="font-weight:bold;color:black;font-size:30px"><i class="fa fa-copyright" aria-hidden="true"></i>KaushikCodeArts : App by Piyush Kaushik</p>
+</div>
+</div>
+  <div class="row text-center">
+                <div class="col-xs-12">
+				<a id="fb" class="btn btn-default text-center" style="background-color:transparent;border-color:transparent;" href="https://www.facebook.com/sharer/sharer.php?u=https://codepen.io/Kaushik02/full/kkBjWY/" target="_blank"><i class="fa fa-facebook" aria-hidden="true" style="color:blue;font-size:30px;font-weight:bold;"></i></a>
+                <a id="whatsapp" class="btn btn-default text-center" style="background-color:transparent;border-color:transparent;" href="whatsapp://send?text=https://codepen.io/Kaushik02/full/kkBjWY/"><i class="fa fa-whatsapp" aria-hidden="true" style="color:Green;font-size:30px;font-weight:bold;"></i></a>
+        		<a id="tweet" class="btn btn-default text-center" style="background-color:transparent;border-color:transparent;" href="https://twitter.com/home?status=https://codepen.io/Kaushik02/full/kkBjWY/" target="_blank"><i class="fa fa-twitter" aria-hidden="true" style="color:skyblue;font-size:30px;font-weight:bold;"></i></a>
+                </div>
+        </div>
+</div>
+
+<script>
+
+$("#clearBtn").on("click", function(){
+$("#searchBox").val('');
+$("#searchResults").html('');
+});
+$("#searchBtn").on("click", function(){
+var searchTerm= $("#searchBox").val();
+//console.log(searchTerm);
+var apiUrl="https://en.wikipedia.org/w/api.php?action=opensearch&search="+searchTerm+"&format=json&callback=?";
+//console.log(apiUrl);
+
+$.ajax({
+url: apiUrl,
+type: "GET",
+async:false,
+dataType:"json",
+success: function(data, status, jqXHR){
+//console.log(data);
+$("#searchResults").html('');
+for(var i=0;i<data[1].length;i++){
+$("#searchResults").prepend("<div><div class='well'><a target='_blank' href='"+data[3][i]+"'<h3 style='font-weight:bold;'>Matched Result : "+data[1][i]+"</h3><p style='font-weight:normal;'>Description :"+data[2][i]+"</p></a></div></div>");
+}
+},
+error: function(){
+alert("Sorry, we've encountered an error");
+}
+
+});
+});
+$('#searchBox').keypress(function(e){
+        if(e.which == 13){//Enter key pressed
+            $('#searchBtn').click();//Trigger search button click event
+        }
+    });
+
+</script>
+
+</body>
+</html>

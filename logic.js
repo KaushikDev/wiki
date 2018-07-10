@@ -18,7 +18,7 @@ success: function(data, status, jqXHR){
 //console.log(data);
 $("#searchResults").html('');
 for(var i=0;i<data[1].length;i++){
-$("#searchResults").prepend("<div><div class='well' style='color:black;'><a target='_blank' href='"+data[3][i]+"'<h3 style='font-weight:bold;color:white;'>Matched Result : "+data[1][i]+"</h3><p style='font-weight:normal;color:white;'>Description :"+data[2][i]+"</p></a></div></div>");
+$("#searchResults").prepend("<div><div class='well' style='background-color:black;'><a target='_blank' href='"+data[3][i]+"'<h3 style='font-weight:bold;color:white;'>Matched Result : "+data[1][i]+"</h3><p style='font-weight:normal;color:white;'>Description :"+data[2][i]+"</p></a></div></div>");
 }
 },
 error: function(){
